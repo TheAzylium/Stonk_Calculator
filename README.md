@@ -1,27 +1,44 @@
-# Stonk
+# Calculateur de Sacs Bancaires
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Ce projet est une interface web destinée à aider les utilisateurs à déterminer combien de sacs ils devraient utiliser pour déposer une certaine somme d'argent dans différents types de machines bancaires.
 
-## Development server
+## Fonctionnalités
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Sélection de différents types de machines bancaires : ATM, Fleeca et Pacific.
+- Calcul du nombre de petits et moyens sacs nécessaires pour atteindre la somme voulue.
+- Option pour ajuster le montant afin d'atteindre le montant exact pour chaque type de machine.
 
-## Code scaffolding
+## Aperçu
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Vous pouvez avoir un aperçu du projet en visitant le lien suivant : [**Lien vers l'aperçu (GitHub Pages)**](https://theazylium.github.io/Stonk_Calculator/).
 
-## Build
+## Comment l'utiliser?
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Sélectionnez le type de machine bancaire.
+2. Entrez le montant que vous souhaitez déposer.
+3. Sélectionnez le type de sac que vous souhaitez utiliser : petit, moyen ou les deux.
+4. Si vous voulez ajuster la somme pour atteindre le montant exact, cochez l'option correspondante et indiquez le montant que vous souhaitez retirer.
+5. Les résultats s'afficheront automatiquement en fonction de vos sélections.
 
-## Running unit tests
+## Installation et Configuration
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clonez le dépôt GitHub.
+2. Exécutez `pnpm install` pour installer toutes les dépendances nécessaires.
+3. Exécutez `pnpm start` pour lancer le serveur de développement.
+4. Visitez `http://localhost:4200/` pour voir l'application en action.
 
-## Running end-to-end tests
+## Contribution
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Si vous souhaitez contribuer à ce projet, n'hésitez pas à soumettre une demande de tirage ou à ouvrir un problème. Toutes les contributions sont les bienvenues!
 
-## Further help
+## Auteur
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Ce projet a été créé avec ❤️ par Jax 'Azylium' Wilson.
+
+## Licence
+
+Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
+
+---
+
+Si vous trouvez ce projet utile, n'oubliez pas de donner une étoile ⭐ et de le partager avec vos amis!
