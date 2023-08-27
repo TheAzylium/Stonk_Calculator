@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
+  AbstractControlOptions,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { CONSTANTS } from './constants';
@@ -17,6 +20,11 @@ import { NumberFormatPipe } from './shared/number-format.pipe';
   imports: [CommonModule, ReactiveFormsModule, NumberFormatPipe],
 })
 export class AppComponent implements OnInit {
+  controlOptions: AbstractControlOptions = {
+    validators: this.bagsValidator,
+    updateOn: 'change',
+  };
+
   form: FormGroup = this._fb.group(
     {
       bank: ['ATM'],
@@ -26,7 +34,7 @@ export class AppComponent implements OnInit {
       isPsycho: [false],
       psychoValue: [{ value: null, disabled: true }, [Validators.max(3000)]],
     },
-    { validators: this.bagsValidator }
+    this.controlOptions
   );
 
   result: any;
@@ -202,11 +210,12 @@ export class AppComponent implements OnInit {
     this.result = result;
   }
 
-  bagsValidator(g: FormGroup): { [key: string]: any } | null {
-    const smallBags = g.get('smallBags')?.value;
-    const mediumBags = g.get('mediumBags')?.value;
-
-    // Vérifiez si les deux sont false
+  bagsValidator(control: AbstractControl): ValidationErrors | null {
+    if (!(control instanceof FormGroup)) {
+      return null;
+    }
+    const smallBags = control.get('smallBags')?.value;
+    const mediumBags = control.get('mediumBags')?.value;
     if (!smallBags && !mediumBags) {
       return { noBagsSelected: true };
     }
