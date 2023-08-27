@@ -7,24 +7,27 @@ import {
   Validators,
 } from '@angular/forms';
 import { CONSTANTS } from './constants';
-import { NumberFormatPipe } from "./shared/number-format.pipe";
+import { NumberFormatPipe } from './shared/number-format.pipe';
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, NumberFormatPipe]
+  selector: 'app-root',
+  standalone: true,
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  imports: [CommonModule, ReactiveFormsModule, NumberFormatPipe],
 })
 export class AppComponent implements OnInit {
-  form: FormGroup = this._fb.group({
-    bank: ['ATM'],
-    amount: [null, [this.maxValidator.bind(this), Validators.required]],
-    smallBags: [true],
-    mediumBags: [true],
-    isPsycho: [false],
-    psychoValue: [{ value: null, disabled: true }, [Validators.max(3000)]],
-  }, { validators: this.bagsValidator });
+  form: FormGroup = this._fb.group(
+    {
+      bank: ['ATM'],
+      amount: [null, [this.maxValidator.bind(this), Validators.required]],
+      smallBags: [true],
+      mediumBags: [true],
+      isPsycho: [false],
+      psychoValue: [{ value: null, disabled: true }, [Validators.max(3000)]],
+    },
+    { validators: this.bagsValidator }
+  );
 
   result: any;
   constructor(private _fb: FormBuilder) {}
@@ -103,8 +106,33 @@ export class AppComponent implements OnInit {
 
     let combinations = [];
 
-    const mediumLimit = mediumBags ? MAX_STACK_BAG_MEDIUM : 0;
-    const smallLimit = smallBags ? MAX_STACK_BAG_SMALL : 0;
+    let mediumLimit = mediumBags ? MAX_STACK_BAG_MEDIUM : 0;
+    let smallLimit = smallBags ? MAX_STACK_BAG_SMALL : 0;
+
+    if (!smallBags) mediumLimit *= 2;
+
+    if (!mediumBags) smallLimit *= 2;
+
+    if (smallBags && mediumBags) {
+      const diffWithTwoSmall = Math.abs(
+        MAX_MONEY - 2 * SMALL_BAG * MAX_STACK_BAG_SMALL
+      );
+      const diffWithTwoMedium = Math.abs(
+        MAX_MONEY - 2 * MEDIUM_BAG * MAX_STACK_BAG_MEDIUM
+      );
+      const diffWithOneEach = Math.abs(
+        MAX_MONEY -
+          (MEDIUM_BAG * MAX_STACK_BAG_MEDIUM + SMALL_BAG * MAX_STACK_BAG_SMALL)
+      );
+
+      if (diffWithTwoSmall < diffWithOneEach) {
+        mediumLimit = 0;
+        smallLimit *= 2;
+      } else if (diffWithTwoMedium < diffWithOneEach) {
+        smallLimit = 0;
+        mediumLimit *= 2;
+      }
+    }
 
     for (let medium = 0; medium <= mediumLimit; medium++) {
       for (let small = 0; small <= smallLimit; small++) {
@@ -120,6 +148,14 @@ export class AppComponent implements OnInit {
               totalAdded,
               removalAmount,
               finalAmount: MAX_MONEY,
+            });
+          } else if (inputAmount + totalAdded < MAX_MONEY) {
+            combinations.push({
+              medium,
+              small,
+              totalAdded,
+              removalAmount: 0,
+              finalAmount: inputAmount + totalAdded,
             });
           }
         } else if (inputAmount + totalAdded <= MAX_MONEY) {
@@ -140,6 +176,7 @@ export class AppComponent implements OnInit {
         a.removalAmount - b.removalAmount ||
         a.medium + a.small - (b.medium + b.small)
     );
+
     return combinations[0];
   }
 
